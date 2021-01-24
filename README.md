@@ -2,21 +2,21 @@
 
 This demo application contains static content, dynamic routes, and API routes.
 
-## Local Development
+#### Local Development
 
 ```
 yarn install
 yarn dev
 ```
 
-## Production build
+#### Production build
 
 ```
 yarn install --frozen-lockfile
 yarn build
 ```
 
-## Docker build
+#### Docker build
 
 ```
 docker build -t nextjs-demo .

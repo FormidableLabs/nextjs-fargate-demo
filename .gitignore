@@ -26,4 +26,5 @@ yarn-error.log*
 
 # terraform files
 .terraform
+terraform.tfstate
 terraform.tfstate.backup

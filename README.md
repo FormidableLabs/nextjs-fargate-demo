@@ -1,5 +1,7 @@
 # This is a starter template for deploying [Next.js](https://nextjs.org/learn) on AWS Fargate.
 
+This demo application contains static content, dynamic routes, and API routes.
+
 ## Local Development
 
 ```
@@ -30,6 +32,8 @@ There are 3 major steps to deploying to AWS.
 
 ### Deploying the networking stack
 
+Run the following in your terminal with [Terraform](https://www.terraform.io/downloads.html) 13.x.
+
 ```
 cd .aws/live/dev/networking
 terraform init
@@ -38,10 +42,12 @@ terraform apply
 
 ### Build and push docker image
 
+Run the following in a terminal or as a Bash script.
+
 ```
 export VERSION=1
 export IMAGE=formidablelabs/nextjs-fargate-demo
-export REGISTRY=168765413198.dkr.ecr.us-east-1.amazonaws.com/nextjs-fargate-demo
+export REGISTRY=<id>.dkr.ecr.us-east-1.amazonaws.com/nextjs-fargate-demo
 
 docker build -t $IMAGE:$VERSION . --no-cache
 
@@ -53,9 +59,16 @@ docker push $REGISTRY:$VERSION
 
 ### Deploying the compute stack
 
+Run the following in your terminal with [Terraform](https://www.terraform.io/downloads.html) 13.x.
+
 ```
-export VERSION=1
+export ECR_IMAGE="<id>.dkr.ecr.us-east-1.amazonaws.com/nextjs-fargate-demo:$VERSION"
+
 cd .aws/live/dev/compute
 terraform init
-terraform apply -var "image=168765413198.dkr.ecr.us-east-1.amazonaws.com/nextjs-fargate-demo:$VERSION"
+terraform apply -var "image=$ECR_IMAGE"
 ```
+
+## AWS Architecture
+
+*Coming Soon*

@@ -32,7 +32,7 @@ docker build -t nextjs-demo .
 
 ## Deploying to AWS
 
-There are 3 major steps to deploying to AWS.
+There are several high level steps to deploying to AWS.
 
 1. Bootstrap the AWS account to prepare for Terrafrom
 1. Deploy the networking stack (VPC) to AWS

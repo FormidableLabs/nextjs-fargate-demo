@@ -2,6 +2,8 @@
 
 This demo application contains static content, dynamic routes, and API routes.
 
+Please read the [Real World Notes](#real-world-notes) before continuing.
+
 #### Requirements
 
 - Nodejs 12.16 or higher

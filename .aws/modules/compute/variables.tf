@@ -2,8 +2,16 @@ variable "image" {
   description = "The ECS image to deploy"
 }
 
+variable "instance_count" {
+  description = "The number of containers to run"
+}
+
 variable "prefix" {
   description = "Name prefix for resources"
+}
+
+variable "stage" {
+  description = "The application environment stage"
 }
 
 variable "tags" {

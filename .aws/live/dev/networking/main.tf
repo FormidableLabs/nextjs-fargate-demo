@@ -3,13 +3,27 @@ provider "aws" {
   region  = "us-east-1"
 }
 
+terraform {
+  backend "s3" {
+    bucket         = "nextjs-fargate-demo-XXXXX-terraform-state"
+    key            = "networking/terraform.tfststate"
+    region         = "us-east-1"
+    dynamodb_table = "nextjs-fargate-demo-terraform-locks"
+  }
+}
+
+locals {
+  prefix = "nextjs-fargate-demo"
+  stage  = "dev"
+}
+
 module "networking" {
   source = "../../../modules/networking"
 
-  prefix = "nextjs-fargate-demo"
+  prefix = local.prefix
   tags = {
     Source  = "terraform"
-    Service = "nextjs-fargate-demo"
-    Stage   = "dev"
+    Service = "${local.prefix}-networking"
+    Stage   = local.stage
   }
 }

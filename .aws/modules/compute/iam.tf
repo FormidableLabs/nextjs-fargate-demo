@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "execution_role" {
 }
 
 resource "aws_iam_role" "execution_role" {
-  name        = "${var.prefix}-ecs-task_execution_role"
+  name        = "${var.prefix}-${var.stage}-ecs-task_execution_role"
   description = "IAM service role for ECS Cluster: ${aws_ecs_cluster.cluster.name}"
 
   assume_role_policy = data.aws_iam_policy_document.execution_role.json
@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "execution_role_policy" {
 }
 
 resource "aws_iam_role_policy" "execution_role_policy" {
-  name = "${var.prefix}-ecs-task_execution_role_policy"
+  name = "${var.prefix}-${var.stage}-ecs-task_execution_role_policy"
   role = aws_iam_role.execution_role.id
 
   policy = data.aws_iam_policy_document.execution_role_policy.json

@@ -1,12 +1,12 @@
 # Creates a cloudwatch log group for tasks
 resource "aws_cloudwatch_log_group" "app" {
-  name = "/aws/ecs/${var.prefix}"
+  name = "/aws/ecs/${var.prefix}-${var.stage}"
   tags = var.tags
 }
 
 # Creates the ECS task with the given resources
 resource "aws_ecs_task_definition" "app" {
-  family = var.prefix
+  family = "${var.prefix}-${var.stage}"
 
   container_definitions = templatefile("${path.module}/tasks/app.tmpl", {
     LOG_GROUP   = aws_cloudwatch_log_group.app.name,
@@ -26,13 +26,13 @@ resource "aws_ecs_task_definition" "app" {
 
 # Build a cluster where tasks can run
 resource "aws_ecs_cluster" "cluster" {
-  name = "${var.prefix}-cluster"
+  name = "${var.prefix}-${var.stage}-cluster"
   tags = var.tags
 }
 
 # Setup a security group for the cluster
 resource "aws_security_group" "cluster" {
-  name   = "${var.prefix}-sg"
+  name   = "${var.prefix}-${var.stage}-sg"
   vpc_id = var.vpc_id
 
   # inbound https
@@ -56,10 +56,10 @@ resource "aws_security_group" "cluster" {
 
 # Setup a service where the cluster can live on our VPC
 resource "aws_ecs_service" "service" {
-  name            = "${var.prefix}-service"
+  name            = "${var.prefix}-${var.stage}-service"
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.app.arn
-  desired_count   = "1"
+  desired_count   = var.instance_count
   launch_type     = "FARGATE"
 
   network_configuration {

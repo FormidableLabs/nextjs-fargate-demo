@@ -1,14 +1,15 @@
-# This is a starter template for deploying [Next.js](https://nextjs.org/learn) on AWS Fargate.
+# This is a reference guide for deploying [Next.js](https://nextjs.org/learn) on AWS Fargate.
 
-This demo application contains static content, dynamic routes, and API routes.
+The demo application contains static content, dynamic routes, and API routes.
 
 Please read the [Real World Notes](#real-world-notes) before continuing.
 
 #### Requirements
 
-- Nodejs 12.16 or higher
-- AWS CLI V2
-- Terraform 13.5 (exact)
+- [Nodejs](https://nodejs.org/en/download/) 12.16+ or higher
+- [Yarn](https://classic.yarnpkg.com/en/docs/install)
+- [AWS CLI V2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
+- [Terraform 13.5](https://www.terraform.io/downloads.html) (exact version)
 
 #### Local Development
 
@@ -34,10 +35,10 @@ docker build -t nextjs-demo .
 
 There are several high level steps to deploying to AWS.
 
-1. Bootstrap the AWS account to prepare for Terrafrom
-1. Deploy the networking stack (VPC) to AWS
-1. Build and push the docker image to AWS Elastic Container Service (ECS)
-1. Deploy the compute stack to (Fargate) AWS
+1. Bootstrap the AWS account to prepare for Terraform
+1. Deploy the networking stack (VPC & ECR) to AWS
+1. Build and push the docker image to AWS Elastic Container Registry (ECR)
+1. Deploy the compute stack (Fargate, Load Balancer) to AWS
 
 The stack is segmented in layers to allow you to precisely target the deployment you need.
 For example, changing just the number of containers you want running in ECS only requires
@@ -52,10 +53,11 @@ a CI or manual deployment process.
 
 In order to track the state of deployed Terraform resources, we need to Bootstrap the
 AWS account for use with Terraform. This will deploy an S3 Bucket and Dynamodb table for
-state locking that will be used downstream.
+state locking that will be used when running Terraform commands.
 
 ```
 cd .aws/live/dev
+
 terraform init
 terraform apply
 ```
@@ -108,7 +110,7 @@ docker push $REGISTRY:$VERSION
 
 ### Deploying the compute stack
 
-Run the following in your terminal with [Terraform](https://www.terraform.io/downloads.html) 13.x.
+Run the following in a terminal or as a Bash script.
 
 ```
 cd .aws/live/dev/compute
@@ -119,7 +121,9 @@ terraform init
 terraform apply -var "image_version=$VERSION"
 ```
 
-It will take a few minutes to fully launch the server, but you will see an output with a DNS url that allows you to hit the service when it is online.
+It will take a few moments to fully launch the server, but you will see an output with a DNS url that allows you to hit the service when it is online.
+
+This project is currently configured for HTTP (80), it will require adding a domain and ACM SSL Certs for HTTPS (443).
 
 ```
 Outputs:
@@ -162,3 +166,7 @@ the `TF_CLI_ARGS_init` environment variable to include a new `key` param.
 ### Dockerfile
 
 The current dockerfile installs both devDependencies and dependencies. For production usage you should slim this docker image down to only what is required for runtime.
+
+### HTTPS
+
+In a real world deployment you would not use HTTP for this application. In order to use HTTPS/SSL, you will need to provision a domain and SSL certificate and attach that to the load balancer. SSL Certs for load balancers require a custom domain.

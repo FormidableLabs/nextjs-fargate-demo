@@ -1,4 +1,4 @@
-# This is a reference guide for deploying [Next.js](https://nextjs.org/learn) on AWS Fargate.
+# This is a demo of deploying [Next.js](https://nextjs.org/learn) on AWS Fargate.
 
 The demo application contains static content, dynamic routes, and API routes.
 

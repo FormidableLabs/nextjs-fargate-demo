@@ -1,7 +1,12 @@
 {
   "name": "nextjs-serverless-demo",
+  "description": "This is a demo of deploying [Next.js](https://nextjs.org/learn) on AWS Fargate",
   "version": "0.1.0",
   "private": true,
+  "author": "Charles Brown <charles.brown@formidable.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/formidablelabs/nextjs-serverless-demo#readme",
+  "url": "https://github.com/formidablelabs/nextjs-serverless-demo/issues",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

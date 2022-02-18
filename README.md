@@ -170,3 +170,8 @@ The current dockerfile installs both devDependencies and dependencies. For produ
 ### HTTPS
 
 In a real world deployment you would not use HTTP for this application. In order to use HTTPS/SSL, you will need to provision a domain and SSL certificate and attach that to the load balancer. SSL Certs for load balancers require a custom domain.
+
+
+## Maintenance Status
+
+**Archived:** This project is no longer maintained by Formidable. We are no longer responding to issues or pull requests unless they relate to security concerns. We encourage interested developers to fork this project and make it their own!
